@@ -19,7 +19,8 @@ return new class extends Migration
             $table->boolean('has_tokens');
             $table->foreignId('user_id')->constrained();
             $table->string('cover')->nullable();
-            $table->foreignId('category_id')->constrained();
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('id')->on('categories');
             $table->timestamps();
         });
     }
