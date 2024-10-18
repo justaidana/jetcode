@@ -25,5 +25,6 @@ return new class extends Migration
             $table->dropColumn('balance');
         });
     }
-        // поиск курса 
+
+    // пупсик
 };
