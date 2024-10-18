@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->decimal('balance', 10, 2)->default(0);
-        }); 
+        });
     }
 
     /**
@@ -25,4 +25,6 @@ return new class extends Migration
             $table->dropColumn('balance');
         });
     }
+
+    // пупсик
 };
