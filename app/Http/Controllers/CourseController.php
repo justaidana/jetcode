@@ -29,7 +29,11 @@ class CourseController extends Controller
      */
     public function show(string $id)
     {
-        $course = Course::with("course_modules")-findOrFail($id);
+        $course = Course::with([
+            'category:id,title',
+            'course_modules.lessons:id,course_module_id,title'
+        ])->findOrFail($id);
+
         return response()->json($course);
     }
 

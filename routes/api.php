@@ -14,3 +14,7 @@ Route::group(['prefix' => 'categories', 'as' => 'categories.'], function () {
     Route::get('/{id}', [CategoryController::class, 'show'])->name('show');
 });
 
+Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
+    Route::get('/me', [UserController::class, 'show'])->name('show'); // User details
+    Route::get('/me/courses', [UserController::class, 'userCourses'])->name('courses'); // User's courses
+});

@@ -6,5 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class CourseModule extends Model
 {
-    //
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+
+    public function lessons()
+    {
+        return $this->hasMany(CourseLesson::class);
+    }
+
 }

@@ -32,9 +32,21 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show()
     {
-        //
+        $user = auth()->user();
+
+        return response()->json($user);
+    }
+
+    // Show the courses for the authenticated user
+    public function userCourses()
+    {
+        $user = auth()->user(); // Get the authenticated user
+
+        $courses = $user->courses()->with('category')->get(); // Fetch courses with category
+
+        return response()->json($courses); // Return courses as JSON
     }
 
     /**
