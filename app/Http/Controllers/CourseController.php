@@ -52,4 +52,33 @@ class CourseController extends Controller
     {
         //
     }
+
+    public function buy($id)
+    {
+        $course = Course::findOrFail($id);
+        $user = Auth::user();
+
+        if ($user->courses()->where('course_id', $id)->exists()) {
+            return response()->json([
+                'message' => 'У вас уже есть этот курс.'
+            ], 400);
+        }
+
+        if ($user->balance < $course->price) {
+            return response()->json([
+                'message' => 'Недостаточно средств.'
+            ], 400);
+        }
+
+        $user->balance -= $course->price;
+        $user->save();
+
+        $user->courses()->attach($course);
+
+        return response()->json([
+            'message' => 'Курс успешно куплен.',
+            'course' => $course,
+            'remaining_balance' => $user->balance
+        ], 200);
+    }
 }

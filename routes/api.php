@@ -9,6 +9,7 @@ use App\Http\Controllers\CourseLessonController;
 Route::group(['prefix' => 'courses', 'as' => 'courses.'], function () {
     Route::get('/', [CourseController::class, 'index'])->name('index');
     Route::get('/{id}', [CourseController::class, 'show'])->name('show');
+    Route::post('/buy/{id}', [CourseController::class, 'buy'])->name('buy');
 });
 Route::group(['prefix' => 'categories', 'as' => 'categories.'], function () {
     Route::get('/{id}', [CategoryController::class, 'show'])->name('show');
