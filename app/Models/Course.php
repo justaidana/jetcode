@@ -26,4 +26,10 @@ class Course extends Model
         return $this->hasMany(CourseLesson::class, 'course_id');
     }
 
+    protected $appends = ['cover_url'];
+
+    public function getCoverUrlAttribute()
+    {
+        return url($this->cover);
+    }
 }

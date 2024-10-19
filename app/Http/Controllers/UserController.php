@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -13,10 +14,10 @@ class UserController extends Controller
     public function createUser()
     {
         User::create([
-           "name" => "John Doe",
-           "email" => "john@doe.com",
-           "password" => "password",
-            "tg_id"  =>  1231,
+            "name" => "John Doe",
+            "email" => "john@doe.com",
+            "password" => "password",
+            "tg_id" => 1231,
 
         ]);
     }
@@ -42,11 +43,11 @@ class UserController extends Controller
     // Show the courses for the authenticated user
     public function userCourses()
     {
-        $user = auth()->user(); // Get the authenticated user
+        $user = auth()->user();
 
-        $courses = $user->courses()->with('category')->get(); // Fetch courses with category
+        $courses = $user->courses()->with('category')->withCount('lessons', 'course_modules')->get();
 
-        return response()->json($courses); // Return courses as JSON
+        return response()->json($courses);
     }
 
     /**
@@ -63,5 +64,28 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function transfer(Request $request)
+    {
+        $user = Auth::user();
+
+        if ($user->tokens <= 0) {
+            return response()->json([
+                'message' => 'Нет доступных курсов.',
+            ], 400);
+        }
+
+        $amount = $user->tokens;
+
+        $user->balance += $amount;
+        $user->tokens = 0;
+        $user->save();
+
+        return response()->json([
+            'message' => 'All tokens transferred successfully.',
+            'new_balance' => $user->balance,
+            'remaining_tokens' => $user->tokens,
+        ]);
     }
 }
