@@ -10,4 +10,9 @@ class CourseLesson extends Model
     {
         return $this->belongsTo(CourseModule::class);
     }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
 }

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
+use App\Models\CourseLesson;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CourseLessonController extends Controller
 {
@@ -25,9 +28,22 @@ class CourseLessonController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($lesson_id)
     {
-        //
+        $user = Auth::user();
+        $lesson = CourseLesson::where('id', $lesson_id)->first();
+
+        $hasCourse = $user->courses()->where('course_id', $lesson->course_id)->exists();
+
+        if (!$hasCourse) {
+            return response()->json([
+                'message' => 'Вы не приобрели этот курс.',
+            ], 403);
+        }
+
+        return response()->json([
+            'lessons' => $lesson
+        ]);
     }
 
     /**
