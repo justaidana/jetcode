@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\UserCourse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
@@ -73,7 +75,10 @@ class CourseController extends Controller
         $user->balance -= $course->price;
         $user->save();
 
-        $user->courses()->attach($course);
+        UserCourse::create([
+           "user_id" => $user->id,
+           "course_id" => $id,
+        ]);
 
         return response()->json([
             'message' => 'Курс успешно куплен.',

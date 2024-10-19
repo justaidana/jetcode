@@ -19,3 +19,7 @@ Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
     Route::get('/me', [UserController::class, 'show'])->name('show'); // User details
     Route::get('/me/courses', [UserController::class, 'userCourses'])->name('courses'); // User's courses
 });
+
+Route::group(['prefix' => 'lessons', 'as' => 'lessons.'], function () {
+    Route::get('/{id}', [CourseLessonController::class, 'show'])->name('show');
+});
